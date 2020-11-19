@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\API",
+    "\\API\\Controllers",
+    "\\Application",
+    "\\Domain",
+    "\\Persistence"
+  ],
+  "SelectedNode": "\\API\\Controllers\\ValuesController.cs",
+  "PreviewInSolutionExplorer": false
+}
