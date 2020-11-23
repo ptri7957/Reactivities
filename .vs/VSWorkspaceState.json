@@ -4,9 +4,11 @@
     "\\API",
     "\\API\\Controllers",
     "\\Application",
+    "\\client",
+    "\\client\\src",
     "\\Domain",
     "\\Persistence"
   ],
-  "SelectedNode": "\\API\\Controllers\\ValuesController.cs",
+  "SelectedNode": "\\client\\src\\App.js",
   "PreviewInSolutionExplorer": false
 }
