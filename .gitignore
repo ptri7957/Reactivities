@@ -5,6 +5,6 @@ obj
 appsettings.json
 appsettings.Development.json
 *.db
-.vs
+*/.vs
 */node_modules
 */package-lock.json
