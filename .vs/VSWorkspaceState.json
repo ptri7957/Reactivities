@@ -1,14 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\API",
-    "\\API\\Controllers",
-    "\\Application",
-    "\\client",
-    "\\client\\src",
-    "\\Domain",
-    "\\Persistence"
+    ""
   ],
-  "SelectedNode": "\\client\\src\\App.js",
+  "SelectedNode": "\\Reactivities.sln",
   "PreviewInSolutionExplorer": false
 }

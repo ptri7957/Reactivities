@@ -23,6 +23,7 @@ namespace API
                     var context = services.GetRequiredService<DataContext>();
                     // Check if DB exists. If not, we will create one based on our migration
                     context.Database.Migrate();
+                    Seed.SeedData(context);
                 }
                 catch (Exception e) 
                 {

@@ -32,7 +32,10 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Value>> Get(int id)
         {
-            var value = await _context.Values.FindAsync(id);
+            Value value = await _context.Values.FindAsync(id);
+            if (value == null) {
+                return NotFound(404);
+            }
             return Ok(value);
         }
 
@@ -53,8 +56,12 @@ namespace API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async void Delete(int id)
         {
+            var checkIfExists = await _context.Values.FindAsync(id);
+            if (checkIfExists == null) {
+                NotFound(404);
+            }
             Value value = new Value() { Id = id };
             _context.Values.Remove(value);
         }
