@@ -35,7 +35,8 @@ namespace API
             services.AddControllers();
             // Add CORS
             services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000")));
-            // Since we are injecting MediatR, we need to add this middleware
+            // Since we are injecting MediatR into our controllers, we need to add this middleware. We supply the type of one handler.
+            // The Assembly then uses this as a reference to locate our other handlers
             services.AddMediatR(typeof(List.Handler).Assembly);
         }
 

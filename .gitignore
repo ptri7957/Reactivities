@@ -1,10 +1,9 @@
 bin
 obj
+.vs
 .vscode
-*.vs
 appsettings.json
 appsettings.Development.json
 *.db
-*/.vs
 */node_modules
 */package-lock.json
