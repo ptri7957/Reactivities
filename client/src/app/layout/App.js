@@ -8,6 +8,30 @@ import ActivityDashboard from "../../features/activities/dashboard/ActivityDashb
 
 const App = () => {
   const [activities, setActivities] = useState([]);
+  const [selectedActivity, setSelectedActivity] = useState();
+  // Check if edit mode is on
+  const [editMode, setEditMode] = useState(false);
+
+  const handleSelectedActivity = (id) => {
+    setSelectedActivity(activities.filter((activity) => activity.id === id)[0]);
+  };
+
+  const handleOpenCreateForm = () => {
+    setSelectedActivity(null);
+    setEditMode(true);
+  }
+
+  const handleCreateActivity = (activity) => {
+    setActivities([...activities, activity]);
+  }
+
+  const handleEditActivity = (activity) => {
+    setActivities([...activities.filter(a => a.id !== activity.id), activity]);
+  }
+
+  const toggleEditMode = () => {
+    setEditMode(!editMode);
+  };
 
   useEffect(() => {
     const getActivities = async () => {
@@ -24,9 +48,18 @@ const App = () => {
 
   return (
     <Fragment>
-      <NavBar />
-      <Container style={{marginTop: "7em"}}>
-        <ActivityDashboard activities={activities} />
+      <NavBar handleOpenCreateForm={handleOpenCreateForm}/>
+      <Container style={{ marginTop: "7em" }}>
+        <ActivityDashboard
+          activities={activities}
+          handleSelectedActivity={handleSelectedActivity}
+          selectedActivity={selectedActivity}
+          editMode={editMode}
+          toggleEditMode={toggleEditMode}
+          setSelectedActivity={setSelectedActivity}
+          handleCreateActivity={handleCreateActivity}
+          handleEditActivity={handleEditActivity}
+        />
       </Container>
     </Fragment>
   );
