@@ -1,25 +1,27 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Image } from "semantic-ui-react";
+import { connect } from "react-redux";
+import { cancel } from "../../../actions/activities"
 
 const ActivityDetails = ({
-  selectedActivity,
+  activities: { activity },
   toggleEditMode,
-  setSelectedActivity,
+  cancel
 }) => {
-  return selectedActivity ? (
+  return activity ? (
     <Card fluid>
       <Image
-        src={`/assets/categoryImages/${selectedActivity.category}.jpg`}
+        src={`/assets/categoryImages/${activity.category}.jpg`}
         wrapped
         ui={false}
       />
       <Card.Content>
-        <Card.Header>{selectedActivity.title}</Card.Header>
+        <Card.Header>{activity.title}</Card.Header>
         <Card.Meta>
-          <span className="date">{selectedActivity.date}</span>
+          <span className="date">{activity.date}</span>
         </Card.Meta>
-        <Card.Description>{selectedActivity.description}</Card.Description>
+        <Card.Description>{activity.description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <Button.Group widths={2}>
@@ -33,7 +35,7 @@ const ActivityDetails = ({
             basic
             color="grey"
             content="Cancel"
-            onClick={(e) => setSelectedActivity(null)}
+            onClick={(e) => cancel()}
           />
         </Button.Group>
       </Card.Content>
@@ -44,7 +46,12 @@ const ActivityDetails = ({
 };
 
 ActivityDetails.propTypes = {
-  selectedActivity: PropTypes.object,
+  activities: PropTypes.object.isRequired,
+  cancel: PropTypes.func.isRequired,
 };
 
-export default ActivityDetails;
+const mapStateToProps = state => ({
+  activities: state.activities
+});
+
+export default connect(mapStateToProps, {cancel})(ActivityDetails);

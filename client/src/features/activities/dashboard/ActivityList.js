@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import { getActivities, getActivity } from "../../../actions/activities";
+import { connect } from "react-redux";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 
-const ActivityList = ({ activities, handleSelectedActivity }) => {
+const ActivityList = ({
+  activities: { activities },
+  getActivities,
+  getActivity
+}) => {
+  useEffect(() => {
+    getActivities();
+  }, [getActivities]);
+
   return (
     <Segment clearing>
       <Item.Group divided>
@@ -20,7 +30,7 @@ const ActivityList = ({ activities, handleSelectedActivity }) => {
                   floated="right"
                   content="view"
                   color="blue"
-                  onClick={(e) => handleSelectedActivity(activity.id)}
+                  onClick={(e) => getActivity(activity.id)}
                 />
                 <Label basic content={activity.category} />
               </Item.Extra>
@@ -33,8 +43,13 @@ const ActivityList = ({ activities, handleSelectedActivity }) => {
 };
 
 ActivityList.propTypes = {
-  activities: PropTypes.array.isRequired,
-  handleSelectedActivity: PropTypes.func.isRequired,
+  activities: PropTypes.object.isRequired,
+  getActivities: PropTypes.func.isRequired,
+  getActivity: PropTypes.func.isRequired,
 };
 
-export default ActivityList;
+const mapStateToProps = (state) => ({
+  activities: state.activities,
+});
+
+export default connect(mapStateToProps, { getActivities, getActivity })(ActivityList);

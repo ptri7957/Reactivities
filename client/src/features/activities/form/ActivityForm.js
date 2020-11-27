@@ -7,18 +7,16 @@ import {
   FormTextArea,
   Segment,
 } from "semantic-ui-react";
-import { v4 as uuid } from "uuid";
+import { connect } from "react-redux";
 
 const ActivityForm = ({
+  activities: {activity},
   toggleEditMode,
-  selectedActivity,
-  handleCreateActivity,
-  handleEditActivity,
 }) => {
   const initialiseForm = () => {
     
-    if (selectedActivity) {
-      return selectedActivity;
+    if (activity) {
+      return activity;
     } else {
       return {
         id: "",
@@ -42,13 +40,17 @@ const ActivityForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if(formContent.id.length === 0){
-        let newActivity = {
-            ...formContent,
-            id: uuid()
-        }
-        handleCreateActivity(newActivity)
+        // let newActivity = {
+        //     ...formContent,
+        //     id: uuid()
+        // }
+        // handleCreateActivity(newActivity)
+        
+        // Call createActivity action 
     }else{
-        handleEditActivity(formContent);
+        // handleEditActivity(formContent);
+
+        // Call editActivity action
     }
   };
 
@@ -108,6 +110,11 @@ const ActivityForm = ({
 
 ActivityForm.propTypes = {
   toggleEditMode: PropTypes.func.isRequired,
+  activities: PropTypes.object.isRequired,
 };
 
-export default ActivityForm;
+const mapStateToProps = state => ({
+  activities: state.activities
+});
+
+export default connect(mapStateToProps)(ActivityForm);
