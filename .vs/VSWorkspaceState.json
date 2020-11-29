@@ -2,7 +2,6 @@
   "ExpandedNodes": [
     "",
     "\\API",
-    "\\Application\\Activities",
     "\\client",
     "\\client\\src",
     "\\client\\src\\app",
@@ -10,6 +9,6 @@
     "\\client\\src\\features",
     "\\client\\src\\features\\nav"
   ],
-  "SelectedNode": "\\client\\src\\features\\nav\\Navbar.js",
+  "SelectedNode": "\\Reactivities.sln",
   "PreviewInSolutionExplorer": false
 }
