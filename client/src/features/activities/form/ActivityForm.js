@@ -8,12 +8,13 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { createActivity } from "../../../actions/activities";
+import { createActivity, editActivity } from "../../../actions/activities";
 
 const ActivityForm = ({
   activities: {activity},
   toggleEditMode,
-  createActivity
+  createActivity,
+  editActivity
 }) => {
   const initialiseForm = () => {
     
@@ -54,6 +55,7 @@ const ActivityForm = ({
         // handleEditActivity(formContent);
 
         // Call editActivity action
+        editActivity(formContent);
     }
   };
 
@@ -115,10 +117,11 @@ ActivityForm.propTypes = {
   toggleEditMode: PropTypes.func.isRequired,
   activities: PropTypes.object.isRequired,
   createActivity: PropTypes.func.isRequired,
+  editActivity: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   activities: state.activities
 });
 
-export default connect(mapStateToProps, {createActivity})(ActivityForm);
+export default connect(mapStateToProps, {createActivity, editActivity})(ActivityForm);

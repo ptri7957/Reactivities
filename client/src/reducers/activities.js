@@ -5,6 +5,7 @@ import {
   CANCEL,
   DELETE_ACTIVITY,
   CREATE_ACTIVITY,
+  EDIT_ACTIVITY,
 } from "../actions/types";
 
 const initialState = {
@@ -31,20 +32,28 @@ export default function (state = initialState, action) {
       return {
         ...state,
         activities: [...state.activities, action.payload],
-        loading: false
-      }
+        loading: false,
+      };
+    case EDIT_ACTIVITY:
+      return {
+        ...state,
+        activities: [
+          ...state.activities.filter((a) => a.id !== action.payload.id),
+          action.payload,
+        ],
+      };
     case CANCEL:
       return {
         ...state,
         activity: null,
-        loading: false
-      }
+        loading: false,
+      };
     case DELETE_ACTIVITY:
       return {
         ...state,
-        activities: state.activities.filter(a => a.id !== action.payload),
-        loading: false
-      }
+        activities: state.activities.filter((a) => a.id !== action.payload),
+        loading: false,
+      };
     case ACTIVITY_ACTION_ERROR:
       return {
         ...state,
