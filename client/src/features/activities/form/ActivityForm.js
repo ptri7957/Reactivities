@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -8,30 +8,26 @@ import {
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { createActivity, editActivity } from "../../../actions/activities";
+import { createActivity, editActivity, cancel, getActivity } from "../../../actions/activities";
+import { withRouter } from "react-router-dom";
 
 const ActivityForm = ({
   activities: {activity},
-  toggleEditMode,
   createActivity,
-  editActivity
+  editActivity,
+  history,
+  cancel,
+  match
 }) => {
-  const initialiseForm = () => {
-    
-    if (activity) {
-      return activity;
-    } else {
-      return {
-        id: "",
-        title: "",
-        category: "",
-        description: "",
-        date: "",
-        city: "",
-        venue: "",
-      };
-    }
-  };
+  const [formContent, setFormContent] = useState({
+    id: "",
+    title: "",
+    category: "",
+    description: "",
+    date: "",
+    city: "",
+    venue: "",
+  });
 
   const handleChange = (e) => {
     setFormContent({
@@ -42,24 +38,30 @@ const ActivityForm = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(formContent.id.length === 0){
-        // let newActivity = {
-        //     ...formContent,
-        //     id: uuid()
-        // }
-        // handleCreateActivity(newActivity)
-        
-        // Call createActivity action
-        createActivity(formContent); 
+    if(match.params.id){
+      editActivity(formContent); 
     }else{
-        // handleEditActivity(formContent);
-
-        // Call editActivity action
-        editActivity(formContent);
+      createActivity(formContent);
     }
+    history.push("/activities");
   };
 
-  const [formContent, setFormContent] = useState(initialiseForm());
+  const handleCancel = () => {
+    cancel();
+    history.push("/activities");
+  }
+
+  useEffect(() => {
+    if(match.params.id){
+      getActivity(match.params.id);
+    }
+
+    if(activity){
+      setFormContent(activity);
+    }
+
+    return () => cancel();
+  }, [formContent, setFormContent, cancel, match, activity]);
 
   return (
     <Segment clearing>
@@ -106,7 +108,7 @@ const ActivityForm = ({
         <Button
           floated="right"
           content="Cancel"
-          onClick={(e) => toggleEditMode()}
+          onClick={(e) => handleCancel()}
         />
       </Form>
     </Segment>
@@ -114,14 +116,14 @@ const ActivityForm = ({
 };
 
 ActivityForm.propTypes = {
-  toggleEditMode: PropTypes.func.isRequired,
   activities: PropTypes.object.isRequired,
   createActivity: PropTypes.func.isRequired,
   editActivity: PropTypes.func.isRequired,
+  cancel: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   activities: state.activities
 });
 
-export default connect(mapStateToProps, {createActivity, editActivity})(ActivityForm);
+export default connect(mapStateToProps, {createActivity, editActivity, cancel})(withRouter(ActivityForm));

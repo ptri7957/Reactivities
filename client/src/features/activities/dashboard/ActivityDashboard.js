@@ -1,29 +1,15 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
 import ActivityList from "./ActivityList";
-import ActivityDetails from "../details/ActivityDetails";
-import ActivityForm from "../form/ActivityForm";
 
-const ActivityDashboard = ({
-  editMode,
-  toggleEditMode,
-}) => {
+const ActivityDashboard = () => {
   return (
     <Grid>
       <Grid.Column width={10}>
         <ActivityList />
       </Grid.Column>
       <Grid.Column width={6}>
-        {!editMode && (
-          <ActivityDetails
-            toggleEditMode={toggleEditMode}
-          />
-        )}
-        {editMode && (
-          <ActivityForm
-            toggleEditMode={toggleEditMode}
-          />
-        )}
+        <h2>Activity filters</h2>
       </Grid.Column>
     </Grid>
   );

@@ -1,15 +1,21 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button, Card, Image } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { cancel } from "../../../actions/activities"
+import { getActivity } from "../../../actions/activities";
+import { Link } from "react-router-dom";
 
 const ActivityDetails = ({
-  activities: { activity },
-  toggleEditMode,
-  cancel
+  activities: { activity, loading },
+  match,
+  getActivity,
+  history
 }) => {
-  return activity ? (
+  useEffect(() => {
+    getActivity(match.params.id);
+  }, [getActivity, match.params.id]);
+
+  return !loading && activity !== null ? (
     <Card fluid>
       <Image
         src={`/assets/categoryImages/${activity.category}.jpg`}
@@ -29,13 +35,14 @@ const ActivityDetails = ({
             basic
             color="blue"
             content="Edit"
-            onClick={(e) => toggleEditMode()}
+            as={Link}
+            to={`/edit/${activity.id}`}
           />
           <Button
             basic
             color="grey"
             content="Cancel"
-            onClick={(e) => cancel()}
+            onClick={e => history.push("/activities")}
           />
         </Button.Group>
       </Card.Content>
@@ -47,11 +54,11 @@ const ActivityDetails = ({
 
 ActivityDetails.propTypes = {
   activities: PropTypes.object.isRequired,
-  cancel: PropTypes.func.isRequired,
+  getActivity: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   activities: state.activities
 });
 
-export default connect(mapStateToProps, {cancel})(ActivityDetails);
+export default connect(mapStateToProps, {getActivity})(ActivityDetails);

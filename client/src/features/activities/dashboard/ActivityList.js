@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { getActivities, getActivity, deleteActivity } from "../../../actions/activities";
 import { connect } from "react-redux";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 const ActivityList = ({
   activities: { activities },
   getActivities,
-  getActivity,
   deleteActivity
 }) => {
   useEffect(() => {
@@ -31,7 +31,8 @@ const ActivityList = ({
                   floated="right"
                   content="view"
                   color="blue"
-                  onClick={(e) => getActivity(activity.id)}
+                  // onClick={(e) => getActivity(activity.id)}
+                  as={Link} to={`/activities/${activity.id}`}
                 />
                 <Button
                   floated="right"

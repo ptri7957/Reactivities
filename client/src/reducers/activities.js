@@ -14,7 +14,7 @@ const initialState = {
   loading: true,
 };
 
-export default function (state = initialState, action) {
+const activities = (state = initialState, action) => {
   switch (action.type) {
     case GET_ACTIVITIES:
       return {
@@ -31,16 +31,12 @@ export default function (state = initialState, action) {
     case CREATE_ACTIVITY:
       return {
         ...state,
-        activities: [...state.activities, action.payload],
         loading: false,
       };
     case EDIT_ACTIVITY:
       return {
         ...state,
-        activities: [
-          ...state.activities.filter((a) => a.id !== action.payload.id),
-          action.payload,
-        ],
+        loading: false
       };
     case CANCEL:
       return {
@@ -65,3 +61,5 @@ export default function (state = initialState, action) {
       return state;
   }
 }
+
+export default activities;
