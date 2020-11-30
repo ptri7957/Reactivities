@@ -15,6 +15,7 @@ using Persistence;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Application.Activities;
+using FluentValidation.AspNetCore;
 
 namespace API
 {
@@ -32,7 +33,9 @@ namespace API
         {
             // Since we are injecting DataContext in our projects, we need to add it as a service
             services.AddDbContext<DataContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(config => {
+                config.RegisterValidatorsFromAssemblyContaining<Create>();
+            });
             // Add CORS
             services.AddCors(opt => opt.AddPolicy("CorsPolicy", policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000")));
             // Since we are injecting MediatR into our controllers, we need to add this middleware. We supply the type of one handler.

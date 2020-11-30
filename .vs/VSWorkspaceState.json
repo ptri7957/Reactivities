@@ -2,6 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\API",
+    "\\Application",
     "\\client",
     "\\client\\src",
     "\\client\\src\\app",
@@ -9,6 +10,6 @@
     "\\client\\src\\features",
     "\\client\\src\\features\\nav"
   ],
-  "SelectedNode": "\\Reactivities.sln",
+  "SelectedNode": "\\Application\\Application.csproj",
   "PreviewInSolutionExplorer": false
 }
