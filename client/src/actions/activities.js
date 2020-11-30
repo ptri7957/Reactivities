@@ -6,6 +6,7 @@ import {
   EDIT_ACTIVITY,
   GET_ACTIVITIES,
   GET_ACTIVITY,
+  SORT_ACTIVITY,
 } from "./types";
 import axios from "axios";
 import { v4 as uuid } from "uuid";
@@ -37,6 +38,12 @@ export const getActivity = (id) => async (dispatch) => {
     });
   }
 };
+
+export const sortActivities = () => dispatch => {
+  dispatch({
+    type: SORT_ACTIVITY
+  });
+}
 
 export const createActivity = (formData) => async (dispatch) => {
   try {

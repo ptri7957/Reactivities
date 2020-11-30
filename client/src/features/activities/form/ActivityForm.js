@@ -5,19 +5,25 @@ import {
   Form,
   FormInput,
   FormTextArea,
+  Grid,
   Segment,
 } from "semantic-ui-react";
 import { connect } from "react-redux";
-import { createActivity, editActivity, cancel, getActivity } from "../../../actions/activities";
+import {
+  createActivity,
+  editActivity,
+  cancel,
+  getActivity,
+} from "../../../actions/activities";
 import { withRouter } from "react-router-dom";
 
 const ActivityForm = ({
-  activities: {activity},
+  activities: { activity },
   createActivity,
   editActivity,
   history,
   cancel,
-  match
+  match,
 }) => {
   const [formContent, setFormContent] = useState({
     id: "",
@@ -38,9 +44,9 @@ const ActivityForm = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(match.params.id){
-      editActivity(formContent); 
-    }else{
+    if (match.params.id) {
+      editActivity(formContent);
+    } else {
       createActivity(formContent);
     }
     history.push("/activities");
@@ -49,14 +55,14 @@ const ActivityForm = ({
   const handleCancel = () => {
     cancel();
     history.push("/activities");
-  }
+  };
 
   useEffect(() => {
-    if(match.params.id){
+    if (match.params.id) {
       getActivity(match.params.id);
     }
 
-    if(activity){
+    if (activity) {
       setFormContent(activity);
     }
 
@@ -64,54 +70,58 @@ const ActivityForm = ({
   }, [formContent, setFormContent, cancel, match, activity]);
 
   return (
-    <Segment clearing>
-      <Form onSubmit={(e) => handleSubmit(e)}>
-        <FormInput
-          placeholder="Title"
-          value={formContent.title}
-          name="title"
-          onChange={(e) => handleChange(e)}
-        />
-        <FormTextArea
-          rows={2}
-          placeholder="Description"
-          value={formContent.description}
-          name="description"
-          onChange={(e) => handleChange(e)}
-        />
-        <FormInput
-          placeholder="Category"
-          value={formContent.category}
-          name="category"
-          onChange={(e) => handleChange(e)}
-        />
-        <FormInput
-          type="date"
-          placeholder="Date"
-          value={formContent.date}
-          name="date"
-          onChange={(e) => handleChange(e)}
-        />
-        <FormInput
-          placeholder="City"
-          value={formContent.city}
-          name="city"
-          onChange={(e) => handleChange(e)}
-        />
-        <FormInput
-          placeholder="Venue"
-          value={formContent.venue}
-          name="venue"
-          onChange={(e) => handleChange(e)}
-        />
-        <Button floated="right" positive type="submit" content="Submit" />
-        <Button
-          floated="right"
-          content="Cancel"
-          onClick={(e) => handleCancel()}
-        />
-      </Form>
-    </Segment>
+    <Grid>
+      <Grid.Column width={10}>
+        <Segment clearing>
+          <Form onSubmit={(e) => handleSubmit(e)}>
+            <FormInput
+              placeholder="Title"
+              value={formContent.title}
+              name="title"
+              onChange={(e) => handleChange(e)}
+            />
+            <FormTextArea
+              rows={2}
+              placeholder="Description"
+              value={formContent.description}
+              name="description"
+              onChange={(e) => handleChange(e)}
+            />
+            <FormInput
+              placeholder="Category"
+              value={formContent.category}
+              name="category"
+              onChange={(e) => handleChange(e)}
+            />
+            <FormInput
+              type="date"
+              placeholder="Date"
+              value={formContent.date}
+              name="date"
+              onChange={(e) => handleChange(e)}
+            />
+            <FormInput
+              placeholder="City"
+              value={formContent.city}
+              name="city"
+              onChange={(e) => handleChange(e)}
+            />
+            <FormInput
+              placeholder="Venue"
+              value={formContent.venue}
+              name="venue"
+              onChange={(e) => handleChange(e)}
+            />
+            <Button floated="right" positive type="submit" content="Submit" />
+            <Button
+              floated="right"
+              content="Cancel"
+              onClick={(e) => handleCancel()}
+            />
+          </Form>
+        </Segment>
+      </Grid.Column>
+    </Grid>
   );
 };
 
@@ -122,8 +132,12 @@ ActivityForm.propTypes = {
   cancel: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({
-  activities: state.activities
+const mapStateToProps = (state) => ({
+  activities: state.activities,
 });
 
-export default connect(mapStateToProps, {createActivity, editActivity, cancel})(withRouter(ActivityForm));
+export default connect(mapStateToProps, {
+  createActivity,
+  editActivity,
+  cancel,
+})(withRouter(ActivityForm));
