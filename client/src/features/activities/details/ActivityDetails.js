@@ -12,12 +12,11 @@ const ActivityDetails = ({
   activities: { activity, loading },
   match,
   getActivity,
+  history
 }) => {
   useEffect(() => {
     getActivity(match.params.id);
-  }, [getActivity, match.params.id]);
-
-  console.log(activity);
+  }, [getActivity, match.params.id, history]);
 
   return (
     !loading && activity ? (

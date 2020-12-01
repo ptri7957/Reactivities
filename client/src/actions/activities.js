@@ -10,6 +10,13 @@ import {
 } from "./types";
 import axios from "axios";
 import { v4 as uuid } from "uuid";
+import { history } from "..";
+
+axios.interceptors.response.use(undefined, error => {
+  if(error.response.status === 404){
+    history.push("/notfound");
+  }
+});
 
 export const getActivities = () => async (dispatch) => {
   try {
@@ -36,6 +43,8 @@ export const getActivity = (id) => async (dispatch) => {
     dispatch({
       type: ACTIVITY_ACTION_ERROR,
     });
+
+    //throw error;
   }
 };
 

@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using System.Net;
+using Application.Errors;
+using MediatR;
 using Persistence;
 using System;
 using System.Threading;
@@ -29,12 +31,12 @@ namespace Application.Activities
 
                 if (activity == null)
                 {
-                    throw new Exception("Could not find entry");
+                    throw new RestException(HttpStatusCode.NotFound, new { activity = "Not found." });
                 }
 
                 _context.Activities.Remove(activity);
 
-                var success = await _context.SaveChangesAsync() > 0;
+                var success = await _context.SaveChangesAsync() > 0; 
 
                 if (success)
                 {

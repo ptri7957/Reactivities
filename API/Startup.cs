@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Application.Activities;
 using FluentValidation.AspNetCore;
+using API.Middleware;
 
 namespace API
 {
@@ -33,6 +34,7 @@ namespace API
         {
             // Since we are injecting DataContext in our projects, we need to add it as a service
             services.AddDbContext<DataContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            // Chain fluent validation
             services.AddControllers().AddFluentValidation(config => {
                 config.RegisterValidatorsFromAssemblyContaining<Create>();
             });
@@ -46,9 +48,10 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
 
             // Redirects http protocols to https
