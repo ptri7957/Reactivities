@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { getActivities } from "../../../actions/activities";
 import { connect } from "react-redux";
-import { Item, Segment, Label } from "semantic-ui-react";
+import { Item, Label } from "semantic-ui-react";
 import ActivityListItem from "./ActivityListItem";
 
 const ActivityList = ({

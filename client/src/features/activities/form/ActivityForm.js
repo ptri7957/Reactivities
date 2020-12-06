@@ -60,6 +60,8 @@ const ActivityForm = ({
   useEffect(() => {
     if (match.params.id) {
       getActivity(match.params.id);
+    } else {
+      activity = null;
     }
 
     if (activity) {

@@ -11,8 +11,12 @@ import {
 import axios from "axios";
 import { v4 as uuid } from "uuid";
 import { history } from "..";
+import { toast } from "react-toastify";
 
 axios.interceptors.response.use(undefined, error => {
+  if(error.response.status === 500){
+    toast.error("Network error - make sure API is running.");
+  }
   if(error.response.status === 404){
     history.push("/notfound");
   }

@@ -1,3 +1,4 @@
+using System.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,14 @@ using MediatR;
 using Application.Activities;
 using FluentValidation.AspNetCore;
 using API.Middleware;
+using Domain;
+using Microsoft.AspNetCore.Identity;
+using Application.Interfaces;
+using Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace API
 {
@@ -32,10 +41,14 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Since we are injecting DataContext in our projects, we need to add it as a service
+            // Since we are injecting DataContext in our projects, we need to add it as a services
             services.AddDbContext<DataContext>(opt => opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             // Chain fluent validation
-            services.AddControllers().AddFluentValidation(config => {
+            services.AddControllers(opt =>
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            }).AddFluentValidation(config => {
                 config.RegisterValidatorsFromAssemblyContaining<Create>();
             });
             // Add CORS
@@ -43,6 +56,26 @@ namespace API
             // Since we are injecting MediatR into our controllers, we need to add this middleware. We supply the type of one handler.
             // The Assembly then uses this as a reference to locate our other handlers
             services.AddMediatR(typeof(List.Handler).Assembly);
+
+            // Configure AspNetCore Identity
+            var builder = services.AddIdentityCore<AppUser>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<DataContext>();
+            identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+
+            // Secure our app with Authorization
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => {
+                opt.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+            });
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,15 +88,17 @@ namespace API
             }
 
             // Redirects http protocols to https
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             // Routes to the appropriate controller
             app.UseRouting();
 
-            app.UseAuthorization();
-
             // Inject CORS middleware
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             // Map the controller endpoints to our API
             app.UseEndpoints(endpoints =>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Label, Item, Segment, Icon } from "semantic-ui-react";
+import { Button, Item, Segment, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { deleteActivity } from "../../../actions/activities";
 import { connect } from "react-redux";

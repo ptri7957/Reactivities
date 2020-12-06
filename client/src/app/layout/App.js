@@ -11,10 +11,12 @@ import HomePage from "../../features/home/HomePage";
 import ActivityForm from "../../features/activities/form/ActivityForm";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
 import NotFound from "./NotFound";
+import { ToastContainer } from "react-toastify";
 
 const App = ({ location }) => {
   return (
     <Provider store={store}>
+      <ToastContainer />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route
@@ -37,7 +39,7 @@ const App = ({ location }) => {
                   <Route
                     key={location.key}
                     exact
-                    path={["/create", "/edit/:id"]}
+                    path={["/create", "/manage/:id"]}
                     render={(props) => <ActivityForm {...props} />}
                   />
                   <Route component={NotFound} />
