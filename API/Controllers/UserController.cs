@@ -10,6 +10,12 @@ namespace API.Controllers
     [AllowAnonymous]
     public class UserController : BaseController
     {
+        [HttpGet]
+        public async Task<ActionResult<User>> GetCurrentUser()
+        {
+            return await Mediator.Send(new CurrentUser.Query());
+        }
+
         [HttpPost("login")]
         public async Task<ActionResult<User>> Login(Login.Query request)
         {
